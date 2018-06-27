@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  BotAccessToken:
+    Description: The bot's access token.
+    Type: String
+    NoEcho: true
+    AllowedPattern: '[^\s]+'
+  RoomId:
+    Description: The ID of the target room.
+    Type: String
+    AllowedPattern: '[^\s]+'
+    Default: "default"
+Resources:
+  # Our Lambda function
+  SendMessage:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.sendMessage
+      Runtime: nodejs8.10
+      CodeUri: dist/sample-aws-deploy.zip
+      #Policies:
+      Environment:
+        Variables:
+          ROOM_ID: !Ref RoomId
+          BOT_ACCESS_TOKEN: !Ref BotAccessToken
+  SendMessagePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref SendMessage
+      Principal: sns.amazonaws.com
+      SourceArn: !Ref MessageTopic
+  # Topic for sending messages to our Lambda function
+  MessageTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        # Messages sent to our topic go to the Lambda function
+        - Endpoint: !GetAtt SendMessage.Arn
+          Protocol: lambda
+Outputs:
+  TopicArn:
+    Description: SNS topic ARN for messages to publish
+    Value: !Ref MessageTopic
+    Export:
+      Name: !Join [':', [ !Ref 'AWS::StackName', TopicArn ]]

@@ -1,0 +1,7 @@
+
+Under my test account: s3://fluggo-test-code
+
+aws --profile free cloudformation package --template-file aws-template.yaml --s3-bucket fluggo-test-code --output-template-file dist/aws-template-packaged.yaml
+aws --profile free cloudformation deploy --template-file dist/aws-template-packaged.yaml --stack-name spark-notifications-dev --capabilities CAPABILITY_IAM --parameter-overrides BotAccessToken=test
+
+aws --profile free sns publish --topic-arn ${topic-arn} --message blah --subject blah

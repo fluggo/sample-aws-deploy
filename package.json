@@ -1,0 +1,55 @@
+{
+  "name": "sample-aws-deploy",
+  "description": "Sample node project with Lambda deployment through CloudFormations.",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": {
+    "name": "Brian Crowell",
+    "email": "brian@fluggo.com"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -r source-map-support/register -r ts-node/register/transpile-only *.spec.ts",
+    "test-coverage": "nyc ./node_modules/.bin/mocha -r source-map-support/register -r ts-node/register/transpile-only *.spec.ts",
+    "test-watch": "mocha -r source-map-support/register -r ts-node/register/transpile-only --watch-extensions ts -w *.spec.ts"
+  },
+  "dependencies": {
+    "aws-lambda": "^0.1.2",
+    "request": "^2.87.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.7",
+    "@types/chai": "^4.1.4",
+    "@types/del": "^3.0.1",
+    "@types/gulp": "^4.0.5",
+    "@types/gulp-zip": "^4.0.0",
+    "@types/mocha": "^5.2.3",
+    "@types/node": "^10.3.4",
+    "@types/request": "^2.47.1",
+    "@types/through2": "^2.0.33",
+    "@types/vinyl": "^2.0.2",
+    "chai": "^4.1.2",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-zip": "^4.1.0",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "source-map-support": "^0.5.6",
+    "through2": "^2.0.3",
+    "ts-node": "^6.1.2",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
+    "vinyl": "^2.2.0"
+  },
+  "nyc": {
+    "reporter": [
+      "html"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.spec.ts"
+    ],
+    "all": true
+  }
+}
